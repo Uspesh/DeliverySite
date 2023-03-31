@@ -1,0 +1,68 @@
+{% extends 'delivery/base.html' %}
+
+<header>
+    {% for i in buttons %}
+    <p id="head"><a href="{% url i.url_name %}"><input id="input" type="button" value="{{ i.title }}"></a></p>
+    {% endfor %}
+</header>
+
+{% block content_cart %}
+<h1 id="title" >Корзина</h1>
+    <table class="cart">
+        <thead>
+        <tr>
+            <th>Фото</th>
+            <th>Товар</th>
+            <th>Количество</th>
+            <th>Обновить количество</th>
+            <th>Удалить</th>
+            <th>Цена за единицу</th>
+            <th>Общая стоимость</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in products %}
+            {# with product=item.product #}
+                <tr>
+                    <td>
+                        <a href="{{ product.get_absolute_url_cart }}"><img src="{{ item.photo.url }}" width="50" height="50"></a>
+                    </td>
+                    <td><strong>{{ item.title }}</strong></td>
+                    <td>
+                        {# url 'cart:cart_quantity' item.pk #}
+                    </td>
+                    <td>
+                        <form id="head" action="{% url 'cart:cart_pop' item.pk %}" method="post">
+                            {{ item.update_quantity_form.quantity }}
+                            {{ item.update_quantity_form.update }}
+                            <input id="button" type="submit" value="-">
+                            {% csrf_token %}
+                        </form>
+                        <form id="head" action="{% url 'cart:cart_count' item.pk %}" method="post">
+                            {{ item.update_quantity_form.quantity }}
+                            {{ item.update_quantity_form.update }}
+                            <input id="button" type="submit" value="+">
+                            {% csrf_token %}
+                        </form>
+                    </td>
+                    <td>
+                        <a href="{% url 'cart:cart_remove' item.pk %}"><input type="submit" value="Удалить"></a>
+                    </td>
+                    <td>{{ item.price }}</td>
+                    <td>{{ item.total_price }}</td>
+                </tr>
+            {# endwith #}
+        {% endfor %}
+        <tr class="total">
+            <td>Всего</td>
+            <td colspan="4"></td>
+            <td><strong>{{ total_price }} руб.</strong></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="center" style="padding-top:100px;">
+        <p id="button"><a href="{% url 'main_page' %}"><input id="input" class="input" type="button" value="В магазин"></a></p>
+        <p id="button"><a href="#"><input id="input" class="input" type="button" value="Оформить заказ"></a></p>
+    </div>
+
+{% endblock %}

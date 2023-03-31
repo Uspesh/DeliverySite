@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link type="text/css" href="{% static 'delivery/css/base_styles.css' %}" rel="stylesheet">
+    <link rel="icon" href="{% static 'delivery/img/icon.png' %}">
+    <title>{{ title }}</title>
+</head>
+<body>
+
+<header class="fixed">
+    <p id="head" class="head-img"><a href="{% url 'main_page' %}"><img src="{% static 'delivery/img/logo.png' %}" width="200px" height="80px"></a></p>
+    <div id="head" class="head-but">
+    {% for i in buttons %}
+    <p id="head"><a href="{% url i.url_name %}"><input id="input" type="button" value="{{ i.title }}"></a></p>
+    {% endfor %}
+    </div>
+    <div id="head" class="cart">
+        <div class="cart-mar-a">
+        {% with total_items=cart|length %}
+        {% if cart|length > 0 %}
+        <a href="{% url 'cart:cart_detail' %}">
+            {{ total_items }} товаров на {{ total_price }} pуб.
+        </a>
+        {% else %}
+        <p class="cart-mar-p">Корзина пуста</p>
+        {% endif %}
+        {% endwith %}
+        </div>
+    </div>
+</header>
+
+<div>
+  {% block content_cart %}
+  {% endblock %}
+</div>
+
+{% block content %}
+
+<h1 id="title" class="center">{{ title }}</h1>
+
+{% for el in data %}
+<div id="main-div" class="hov-main-div" onclick="window.location='{{ el.get_absolute_url }}'">
+    <div id="text-div">
+        <p class="center"><img class="img-size" src="{{ el.photo.url }}"></p>
+        <h3 class="center">{{ el.title }}</h3>
+        <p class="text">{{ el.about|linebreaks }}</p>
+    </div>
+        <p id="button"><a href="{{ el.get_absolute_url }}"><input id="input" class="input" type="button" value="Подробнее"></a></p>
+        <form id="head" action="{% url 'cart:cart_add' el.pk %}" method="post"><!--el.pk-->
+            {% csrf_token %}
+            {{ cart_product.form }}
+            <input id="input" class="input" type="submit" value="В корзину">
+        </form>
+</div>
+{% endfor %}
+
+{% endblock %}
+
+<footer class="footer">
+    {% for i in footer %}
+    <div class="p-footer">
+        <p id="head"><img class="footer-img-size" src="{% static i.photo %}"></p>
+    </div>
+    {% endfor %}
+    <hr>
+    <div>
+        <div class="left-side">
+        <h2>Самурай Джек</h2>
+        <p>Время работы: 11:00 - 23:30</p>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        </div>
+        <div class="right-side">
+        <p>Свяжитесь с нами</p>
+        <h2>+7 (861) 250-69-79</h2>
+        <h2>+7 (988) 240-20-58</h2>
+        <p>Напишите нам на почту:</p>
+        <p><strong>info@jackjackkrd.ru</strong></p>
+        </div>
+    </div>
+    <div>
+        <p class="left-side">2023 г. «JackJackKrd.ru»</p>
+        <p class="down-center-side"><a href="#">Политика конфиденциальности</a></p>
+        <p class="down-right-side"><a href="#">Публичная оферта</a></p>
+    </div>
+</footer>
+
+</body>
+</html>

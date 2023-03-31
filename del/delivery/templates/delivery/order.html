@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link type="text/css" href="{% static 'delivery/css/base_styles.css' %}" rel="stylesheet">
+    <title>{{ title }}</title>
+</head>
+<body>
+
+<header class="fixed">
+    <p id="head" class="head-img"><a href="{% url 'main_page' %}"><img src="{% static 'delivery/img/logo.png' %}" width="170px" height="80px"></a></p>
+    <div id="head" class="head-but">
+    {% for i in buttons %}
+    <p id="head"><a href="{% url i.url_name %}"><input id="input" type="button" value="{{ i.title }}"></a></p>
+    {% endfor %}
+    </div>
+    <div id="head" class="cart">
+        <div class="cart-mar-a">
+        {% with total_items=cart|length %}
+        {% if cart|length > 0 %}
+        <a href="{% url 'cart:cart_detail' %}">
+            {{ total_items }} товаров на {{ total_price }} pуб.
+        </a>
+        {% else %}
+        <p class="cart-mar-p">Корзина пуста</p>
+        {% endif %}
+        {% endwith %}
+        </div>
+    </div>
+</header>
+
+{% block content %}
+
+<div>
+    <h1 id="title">{{ title }}</h1>
+    <h2><strong>Как происходит оплата?</strong></h2>
+    <p>1.<strong>Наличный расчет</strong></p>
+    <p>Все заказы доставляет наш собственный курьер и оплата может осуществляться наличными курьеру в руки. При получении товара обязательно проверьте комплектацию товара и наличие чека</p>
+    <br>
+    <h2><strong>Как оформить заказ на сайте?</strong></h2>
+    <p>1.<strong>Перейдите в нужный раздел</strong></p>
+    <p>С главной страницы или из главного меню перейдите в интересующий вас раздел сайта, например <a href="{% url 'rolls' %}">роллы</a>.</p>
+    <p>2.<strong>Выберите нужный вам товар</strong></p>
+    <p>Изучите каталог, выберите товар, который подходит вам по вкусу и нажмите либо "Просмотреть" (для изучения состава товара), либо "Заказать".</p>
+    <p>3.<strong>Добавьте товар в "Корзину"</strong></p>
+    <p>Нажмите на кнопку "Заказать" и товар автоматически добавится в корзину - корзина находится в правой стороне экрана (Кружочек с картинкой корзины).</p>
+    <p>4.<strong>Добавьте палочки, соус и имбирь с васаби</strong></p>
+    <p>Если вам необходимы дополнительные товары, то перед оформлением заказа добавьте их, перейдя по ссылке в корзине в раздел "<a href="{% url 'optional' %}">Дополнительно</a>"</p>
+    <p>5.<strong>Заполните контактную информацию</strong></p>
+    <p>Введите все необходимые данные, которые предлагает заполнить "Корзина"</p>
+    <p>6.<strong>Оформите заказ</strong></p>
+    <p>Когда вы закончили заполнять все поля нажмите на кнопку "Подтвердить заказ" и ожидайте звонка от менеджера.</p>
+    <br>
+    <h2><strong>В какие районы Краснодара осуществляется доставка заказов.</strong></h2>
+    <p>Мы доставляем все наши заказы во все районы краснодара. Доставка бесплатная при заказе от 500 рублей в радиусе 5 км от заведения. Во всех остальных случаях доставка рассчитывается индивидуально по телефону с менеджером. Следите за нашими обновлениями. Возможно скоро эти районы станут доступными для заказа.</p>
+    <br>
+    <h2><strong>Смотрите также:</strong></h2>
+    <ul>
+        <li><a href="{% url 'rolls' %}">заказать роллы с доставкой</a></li>
+        <li><a href="{% url 'pizza' %}">пицца Краснодар с бесплатной доставкой</a></li>
+    </ul>
+</div>
+
+
+<footer class="footer">
+    {% for i in footer %}
+    <div class="p-footer">
+        <p id="head"><img class="footer-img-size" src="{% static i.photo %}"></p>
+    </div>
+    {% endfor %}
+    <hr>
+    <div>
+        <div class="left-side">
+        <h2>Самурай Джек</h2>
+        <p>Время работы: 11:00 - 23:30</p>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        </div>
+        <div class="right-side">
+        <p>Свяжитесь с нами</p>
+        <h2>+7 (861) 250-69-79</h2>
+        <h2>+7 (988) 240-20-58</h2>
+        <p>Напишите нам на почту:</p>
+        <p><strong>info@jackjackkrd.ru</strong></p>
+        </div>
+    </div>
+    <div>
+        <p class="left-side">2023 г. «JackJackKrd.ru»</p>
+        <p class="down-center-side"><a href="#">Политика конфиденциальности</a></p>
+        <p class="down-right-side"><a href="#">Публичная оферта</a></p>
+    </div>
+</footer>
+{% endblock %}
+
+</body>
+</html>

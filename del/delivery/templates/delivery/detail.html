@@ -1,0 +1,14 @@
+{% extends 'delivery/base.html' %}
+
+{% block content_cart %}
+
+<div>
+  <form action="{% url 'cart:cart_add' product.pk %}" method="post">
+    {% csrf_token %}
+    {{ cart_product.form }}
+    <input type="submit" value="В корзину">
+  </form>
+
+</div>
+
+{% endblock %}

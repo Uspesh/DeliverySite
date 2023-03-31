@@ -1,0 +1,13 @@
+{% extends 'delivery/base.html' %}
+
+{% block content %}
+<h1 id="title" class="center">{{ title }}</h1>
+
+{% for el in menu_data %}
+<div class="threed" id="menu-div" onclick="window.location='{{ el.url_name }}'">
+    <p class="p-style"><img src="{{ el.photo.url }}" width="360" height="270"></p>
+    <p class="p-style"><a class="a-style" href="{% url el.url_name %}">{{ el.title }}</a></p>
+</div>
+{% endfor %}
+
+{% endblock %}
