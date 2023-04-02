@@ -1,32 +1,14 @@
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView
 from .forms import UserInfo
 from .models import Product, Menu
+from .utils import buttons, footer
 
-
-buttons = [
-    {'title': 'Главная', 'url_name': 'main_page'},
-    {'title': 'Меню', 'url_name': 'menu'},
-    {'title': 'Акции', 'url_name': 'promotions'},
-    {'title': 'Контакты', 'url_name': 'contacts'},
-    {'title': 'Доставка и оплата', 'url_name': 'order'},
-]
-
-footer = [
-    {'photo': 'delivery/img/footer-img 1.jpg'},
-    {'photo': 'delivery/img/footer-img-2.jpg'},
-    {'photo': 'delivery/img/footer-img-3.jpg'},
-    {'photo': 'delivery/img/footer-img-4.jpg'},
-    {'photo': 'delivery/img/footer-img-5.jpg'},
-    {'photo': 'delivery/img/footer-img-6.jpg'},
-    {'photo': 'delivery/img/footer-img-7.jpg'},
-    {'photo': 'delivery/img/footer-img-8.jpg'},
-]
 
 def main_page(request):
     """генерация главной страницы"""
-    data = Product.objects.all().filter(category_id = 1)
-    title: str = 'Заказать комбо наборы в Краснодаре'
+    data = Product.objects.filter(pk__lt=20)
+    title = 'Jack Jack - бастрая доставка еды на дом и офис в Краснодаре, заказать еду бесплатно'
     cart = request.session.get('cart', {})
     products = Product.objects.filter(pk__in=cart.keys())
     total_price = sum(product.price * cart[str(product.pk)] for product in products)
@@ -135,6 +117,7 @@ def optional(request):
     return render(request, 'delivery/menu/optional.html', {'data': data, 'buttons': buttons, 'title':title,
                                                   'cart': cart, 'total_price': total_price, 'footer': footer})
 
+# остальные разделы
 
 def promotions(request):
     title = 'Акции'
@@ -161,9 +144,20 @@ def order(request):
     products = Product.objects.filter(pk__in=cart.keys())
     total_price = sum([product.price * cart[str(product.pk)] for product in products])
     return render(request, 'delivery/order.html', {'buttons': buttons, 'title': title,
-                                                   'cart': cart, 'total_price': total_price, 'footer': footer})
+                                                   'cart': cart, 'total_price': total_price,
+                                                   'footer': footer})
 
-class GetInfo(CreateView):
-    form_class = UserInfo
-    template_name = 'delivery/get_info.html'
-    success_url = ''
+def get_info(request):
+    title = 'Оформление заказа'
+    return render(request, 'delivery/get_info.html', {'title': title})
+
+
+# class UserInfo(CreateView):
+#     form_class = UserInfo
+#     template_name = 'delivery/get_info.html'
+#     success_url = ''
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['title'] = 'Оформление заказа'
+#         return context

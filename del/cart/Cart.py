@@ -33,7 +33,7 @@ class Cart(object):
         product_pk = str(product.pk)
 
         if product_pk in self.cart:
-            del self.cart[product_pk]
+            del self.cart[str(product_pk)]
             self.save()
 
     def __iter__(self):

@@ -48,7 +48,7 @@
         <p class="text">{{ el.about|linebreaks }}</p>
     </div>
         <p id="button"><a href="{{ el.get_absolute_url }}"><input id="input" class="input" type="button" value="Подробнее"></a></p>
-        <form id="head" action="{% url 'cart:cart_add' el.pk %}" method="post"><!--el.pk-->
+        <form id="head" action="{% url 'cart:cart_add' el.pk %}" method="post">
             {% csrf_token %}
             {{ cart_product.form }}
             <input id="input" class="input" type="submit" value="В корзину">

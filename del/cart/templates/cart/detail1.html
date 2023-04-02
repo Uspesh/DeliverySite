@@ -1,0 +1,54 @@
+{% extends "delivery/base.html" %}
+{% load cart_tags %}
+
+
+<header>
+    {% for i in buttons %}
+    <p id="head"><a href="{% url i.url_name %}"><input id="input" type="button" value="{{ i.title }}"></a></p>
+    {% endfor %}
+</header>
+
+{% block content %}
+<div class="cart-main-div">
+<h1 id="title" class="center">{{ title }}</h1>
+
+{% for item in products %}
+<div class="product-div">
+<hr>
+    <a id="head" href="{{ item.get_absolute_url }}"><img src="{{ item.photo.url }}" width="50" height="50"></a>
+    <p id="head"><strong>{{ item.title }}</strong></p>
+    <form id="head" action="{% url 'cart:cart_pop' item.pk %}" method="post">
+        <input id="button" type="submit" value="-">
+        {% csrf_token %}
+    </form>
+    <p id="head">{{item|get_product_quantity:cart}}</p>
+    <form id="head" action="{% url 'cart:cart_count' item.pk %}" method="post">
+        <input id="button" type="submit" value="+">
+        {% csrf_token %}
+    </form>
+    <p id="head">{{ item|total_element_price:cart }} руб.</p>
+    <a id="head" href="{% url 'cart:cart_remove' item.pk %}"><input type="submit" value="Удалить"></a>
+<hr>
+</div>
+{% endfor %}
+<h3 class = "center"><strong>Всего {{ total_price }} руб.</strong></h3>
+
+<div>
+    <p class="center" style="color: red">Пожалуйста, не забудьте добавить себе в заказ из раздела «Дополнительно» палочки, васаби, соевый соус и имбирь по своему желанию. <u>Реальное блюдо может отличаться от фотографии.</u></p>
+    <a class="center" href="{% url 'optional' %}"><p><strong>Нажмите сюда</strong>, чтобы перейти в раздел <strong>«Дополнительно»</strong> для заказа палочек, имбиря, васаби и соевого соуса</p></a>
+</div>
+
+<div class="center">
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-error">{{ form.non_field_errors }}</div>
+    {% for f in form %}
+    <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}} </label><br>{{ f }}</p>
+    <div class="form-error">{{ f.errors }}</div>
+    {% endfor %}
+    <h3><strong>Всего {{ total_price }} руб.</strong></h3>
+    <button type="submit">Подтвердить</button>
+  </form>
+</div>
+</div>
+{% endblock %}

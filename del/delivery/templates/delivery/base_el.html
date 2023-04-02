@@ -16,10 +16,8 @@
     <p><img id="img-pose" class="el-img-size" src="{{ element.photo.url }}"></p>
     <div class="el-text-div" id="text-div">
         <p class="text">{{ element.about|linebreaks }}</p>
-        <!--<p id="button" class="button-el"><a href="#"><input id="input" class="input" value="В корзину"></a></p>-->
         <form id="button" class="button-el" action="{% url 'cart:cart_add' element.pk %}" method="post"><!--el.pk-->
             {% csrf_token %}
-            {{ cart_product.form }}
             <input id="input" class="input" type="submit" value="В корзину">
         </form>
     </div>

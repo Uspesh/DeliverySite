@@ -191,3 +191,12 @@ td{
   margin-left: 300px;
 }
 
+.cart-main-div{
+  margin: 0 350px 0 350px;
+  width: 500px;
+}
+
+.product-div{
+  padding-top: 0px;
+  text-indent: 5px;
+}

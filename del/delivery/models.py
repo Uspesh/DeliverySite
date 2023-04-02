@@ -46,7 +46,8 @@ class Category(models.Model):
 
 class GetUserInfo(User):
     name = models.CharField(max_length=40)
-    tel_num = models.IntegerField()
+    tel_num = models.CharField(max_length=12) # +79002410981
+    comment = models.TextField(blank=True)
     address = models.TextField()
 
     USERNAME_FIELD = 'name'

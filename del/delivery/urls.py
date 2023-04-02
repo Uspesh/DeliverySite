@@ -20,4 +20,5 @@ urlpatterns = [
     path('promotions/', promotions, name='promotions'),
     path('contacts/', contacts, name='contacts'),
     path('order/', order, name='order'),
+    #path('cart/order/', UserInfo.as_view(), name = 'get_info')
 ]

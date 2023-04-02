@@ -1,4 +1,6 @@
 {% extends 'delivery/base.html' %}
+{% load cart_tags %}
+
 
 <header>
     {% for i in buttons %}
@@ -25,22 +27,18 @@
             {# with product=item.product #}
                 <tr>
                     <td>
-                        <a href="{{ product.get_absolute_url_cart }}"><img src="{{ item.photo.url }}" width="50" height="50"></a>
+                        <a href="{{ item.get_absolute_url }}"><img src="{{ item.photo.url }}" width="50" height="50"></a>
                     </td>
                     <td><strong>{{ item.title }}</strong></td>
                     <td>
-                        {# url 'cart:cart_quantity' item.pk #}
+                        {{item|get_product_quantity:cart}}
                     </td>
                     <td>
                         <form id="head" action="{% url 'cart:cart_pop' item.pk %}" method="post">
-                            {{ item.update_quantity_form.quantity }}
-                            {{ item.update_quantity_form.update }}
                             <input id="button" type="submit" value="-">
                             {% csrf_token %}
                         </form>
                         <form id="head" action="{% url 'cart:cart_count' item.pk %}" method="post">
-                            {{ item.update_quantity_form.quantity }}
-                            {{ item.update_quantity_form.update }}
                             <input id="button" type="submit" value="+">
                             {% csrf_token %}
                         </form>
@@ -49,7 +47,7 @@
                         <a href="{% url 'cart:cart_remove' item.pk %}"><input type="submit" value="Удалить"></a>
                     </td>
                     <td>{{ item.price }}</td>
-                    <td>{{ item.total_price }}</td>
+                    <td>{{ item|total_element_price:cart }}</td>
                 </tr>
             {# endwith #}
         {% endfor %}
@@ -62,7 +60,7 @@
     </table>
     <div class="center" style="padding-top:100px;">
         <p id="button"><a href="{% url 'main_page' %}"><input id="input" class="input" type="button" value="В магазин"></a></p>
-        <p id="button"><a href="#"><input id="input" class="input" type="button" value="Оформить заказ"></a></p>
+        <p id="button"><a href="{% url 'get_info' %}"><input id="input" class="input" type="button" value="Оформить заказ"></a></p>
     </div>
 
 {% endblock %}
